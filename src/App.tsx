@@ -11,6 +11,7 @@ import ChapterStudyPage from "./pages/ChapterStudyPage";
 import PracticePage from "./pages/PracticePage";
 import SchedulePage from "./pages/SchedulePage";
 import ProgressPage from "./pages/ProgressPage";
+import UploadPage from "./pages/UploadPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
