@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { StudyScheduleCalendar } from "@/components/StudyScheduleCalendar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PlusCircle, Calendar } from "lucide-react";
+import { Plus, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 import { StudySchedule, StudySession } from "@/types";
 
 // Mock schedule data
@@ -31,34 +31,6 @@ const mockSchedule: StudySchedule = {
       duration: 45,
       chapterId: "1",
       completed: true
-    },
-    {
-      id: "session-3",
-      date: "2025-04-25T16:00:00Z",
-      duration: 90,
-      chapterId: "2",
-      completed: false
-    },
-    {
-      id: "session-4",
-      date: "2025-04-27T09:00:00Z",
-      duration: 60,
-      chapterId: "2",
-      completed: false
-    },
-    {
-      id: "session-5",
-      date: "2025-04-28T11:00:00Z",
-      duration: 30,
-      chapterId: "2",
-      completed: false
-    },
-    {
-      id: "session-6",
-      date: "2025-04-30T15:00:00Z",
-      duration: 90,
-      chapterId: "3",
-      completed: false
     }
   ]
 };
@@ -75,107 +47,94 @@ const SchedulePage = () => {
     }));
   };
 
-  const completedSessions = schedule.sessions.filter(s => s.completed).length;
-  const totalSessions = schedule.sessions.length;
-  const totalMinutes = schedule.sessions.reduce((total, session) => total + session.duration, 0);
-  const totalHours = (totalMinutes / 60).toFixed(1);
+  // Group sessions by date
+  const sessionsByDate: Record<string, StudySession[]> = {};
+  schedule.sessions.forEach(session => {
+    const date = new Date(session.date).toLocaleDateString();
+    if (!sessionsByDate[date]) {
+      sessionsByDate[date] = [];
+    }
+    sessionsByDate[date].push(session);
+  });
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       
-      <main className="flex-grow">
-        <section className="bg-white border-b">
-          <div className="container mx-auto px-4 py-6">
-            <h1 className="text-3xl font-bold mb-2">Study Schedule</h1>
-            <p className="text-gray-600">Plan and track your study sessions</p>
-          </div>
-        </section>
-        
-        <section className="py-8">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="md:col-span-2">
-                <StudyScheduleCalendar 
-                  schedule={schedule} 
-                  onSessionComplete={handleSessionComplete} 
-                />
-              </div>
-              
+      <main className="flex-grow p-4">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Study Schedule</h1>
+          <Button asChild>
+            <Link to="/upload">
+              <Plus className="h-4 w-4 mr-2" />
+              Upload Book
+            </Link>
+          </Button>
+        </div>
+
+        <Card className="mb-6">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-4">
               <div>
-                <Card className="mb-6">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold mb-4">Schedule Summary</h3>
-                    
-                    <div className="space-y-4">
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <div className="text-sm text-gray-600 mb-1">Current Textbook</div>
-                        <div className="font-medium">Calculus: Early Transcendentals</div>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-gray-50 p-3 rounded-md text-center">
-                          <div className="text-2xl font-bold text-math-700">{completedSessions}/{totalSessions}</div>
-                          <div className="text-sm text-gray-600">Sessions Completed</div>
-                        </div>
-                        <div className="bg-gray-50 p-3 rounded-md text-center">
-                          <div className="text-2xl font-bold text-math-700">{totalHours}</div>
-                          <div className="text-sm text-gray-600">Total Hours</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <div className="text-sm text-gray-600 mb-1">Period</div>
-                          <div className="font-medium">Apr 1 - May 15, 2025</div>
-                        </div>
-                        <Badge>{schedule.hoursPerWeek} hours/week</Badge>
-                      </div>
-                      
-                      <Button className="w-full">
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Create New Schedule
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <Calendar className="h-5 w-5 mr-2 text-math-700" />
-                      <h3 className="text-lg font-bold">Upcoming Sessions</h3>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      {schedule.sessions
-                        .filter(s => !s.completed)
-                        .slice(0, 3)
-                        .map((session, index) => (
-                          <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                            <div>
-                              <div className="font-medium">Chapter {session.chapterId}</div>
-                              <div className="text-sm text-gray-600">
-                                {new Date(session.date).toLocaleDateString()} • {session.duration} min
-                              </div>
-                            </div>
-                            <Button size="sm" variant="outline">Complete</Button>
-                          </div>
-                        ))}
-                      
-                      {schedule.sessions.filter(s => !s.completed).length === 0 && (
-                        <div className="text-center py-6 text-gray-600">
-                          <p>No upcoming sessions!</p>
-                          <p className="text-sm mt-1">All your study sessions have been completed.</p>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                <h2 className="font-semibold">Current Textbook</h2>
+                <p className="text-sm text-gray-600">Calculus: Early Transcendentals</p>
+              </div>
+              <Badge>{schedule.hoursPerWeek}h/week</Badge>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="bg-gray-100 p-3 rounded-lg text-center">
+                <div className="text-xl font-bold text-primary">
+                  {schedule.sessions.filter(s => s.completed).length}/{schedule.sessions.length}
+                </div>
+                <div className="text-xs text-gray-600">Completed</div>
+              </div>
+              <div className="bg-gray-100 p-3 rounded-lg text-center">
+                <div className="text-xl font-bold text-primary">
+                  {new Date(schedule.startDate).toLocaleDateString()} - {new Date(schedule.endDate).toLocaleDateString()}
+                </div>
+                <div className="text-xs text-gray-600">Study Period</div>
               </div>
             </div>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          {Object.entries(sessionsByDate).map(([date, sessions]) => (
+            <Card key={date}>
+              <CardContent className="p-4">
+                <h3 className="font-semibold mb-3">{date}</h3>
+                <div className="space-y-3">
+                  {sessions.map((session) => (
+                    <div
+                      key={session.id}
+                      className={`flex items-center justify-between p-3 rounded-lg ${
+                        session.completed ? 'bg-green-50' : 'bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <BookOpen className="h-4 w-4 mr-2 text-primary" />
+                        <div>
+                          <div className="font-medium">Chapter {session.chapterId}</div>
+                          <div className="text-sm text-gray-600">{session.duration} minutes</div>
+                        </div>
+                      </div>
+                      <Button
+                        variant={session.completed ? "outline" : "default"}
+                        size="sm"
+                        asChild
+                      >
+                        <Link to={`/textbook/${schedule.textbookId}/chapter/${session.chapterId}/study`}>
+                          {session.completed ? 'Review' : 'Start'}
+                        </Link>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </main>
       
       <Footer />

@@ -24,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/upload" element={<UploadPage />} />
           <Route path="/textbook/:id" element={<TextbookDetailPage />} />
           <Route path="/textbook/:textbookId/chapter/:chapterId/study" element={<ChapterStudyPage />} />
           <Route path="/textbook/:textbookId/chapter/:chapterId/practice" element={<PracticePage />} />
