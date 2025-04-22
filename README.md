@@ -1,73 +1,56 @@
-# Welcome to your Lovable project
 
-## Project info
+# LearnWise Math Mentor
 
-**URL**: https://lovable.dev/projects/808b74c8-ece1-4a90-b607-981d37b675ec
+An AI-powered mathematics learning platform that helps students master mathematical concepts through personalized learning experiences.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **AI-Generated Content**: Access concise summaries of textbook chapters
+- **Adaptive Practice Questions**: Test your knowledge with practice questions of varying difficulty levels
+- **Study Scheduling**: Create personalized study plans to stay on track
+- **Progress Tracking**: Monitor your learning progress across different textbooks and chapters
 
-**Use Lovable**
+## Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/808b74c8-ece1-4a90-b607-981d37b675ec) and start prompting.
+- **Frontend**: React with TypeScript
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Routing**: React Router
+- **State Management**: React Query
+- **Charts and Visualization**: Recharts
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+1. Clone this repository
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the development server:
+   ```
+   npm run dev
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Development Roadmap
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Phase 1: Web Application (Current)
+- Browse and search math textbooks
+- View AI-generated chapter summaries
+- Practice with questions of varying difficulty
+- Track progress across textbooks
 
-Follow these steps:
+### Phase 2: Advanced Features (Upcoming)
+- User authentication and profiles
+- Backend API integration
+- Custom study schedule creation
+- Advanced analytics and progress tracking
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Project Structure
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- `src/components/` - Reusable UI components
+- `src/pages/` - Full page components
+- `src/data/` - Mock data for demo purposes
+- `src/types/` - TypeScript type definitions
 
-# Step 3: Install the necessary dependencies.
-npm i
+## License
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/808b74c8-ece1-4a90-b607-981d37b675ec) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+MIT
