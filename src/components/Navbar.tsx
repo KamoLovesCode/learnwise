@@ -1,67 +1,34 @@
-import { Link } from "react-router-dom"
-import { Home, Plus, Book, Clipboard } from "lucide-react"  // updated icons
-import { useState } from "react"
+import { NavLink } from "react-router-dom";
+import { Book, Home, Calendar, ChartBar } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export function Navbar() {
-  const [showInput, setShowInput] = useState(false)
-  const [inputValue, setInputValue] = useState("")
-
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      // call Gemini API to fetch textbook and chapters (stub implementation)
-      console.log("Fetching data for:", inputValue)
-      // ...gemini fetch logic...
-      setInputValue("")
-      setShowInput(false)
-    }
-  }
+export const Navbar = () => {
+  const menuItems = [
+    { icon: Home, label: "Home", path: "/" },
+    { icon: Book, label: "Library", path: "/library" },
+    { icon: Calendar, label: "Schedule", path: "/schedule" },
+    { icon: ChartBar, label: "Progress", path: "/progress" },
+  ];
 
   return (
-    <>
-      <nav className="fixed bottom-0 left-0 right-0 bg-background border-t">
-        <div className="max-w-md mx-auto px-4 py-2">
-          <ul className="flex items-center justify-around">
-            <li>
-              <Link to="/" className="flex flex-col items-center p-2 text-muted-foreground hover:text-primary">
-                <Home size={24} />
-                <span className="text-xs">Home</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/library" className="flex flex-col items-center p-2 text-muted-foreground hover:text-primary">
-                <Book size={24} />
-                <span className="text-xs">Library</span>
-              </Link>
-            </li>
-            <li>
-              <button onClick={() => setShowInput(true)} className="flex flex-col items-center p-2 text-muted-foreground hover:text-primary">
-                <Plus size={24} />
-                <span className="text-xs">Add Book</span>  {/* changed label */}
-              </button>
-            </li>
-            <li>
-              <Link to="/create-task" className="flex flex-col items-center p-2 text-muted-foreground hover:text-primary">
-                <Clipboard size={24} />
-                <span className="text-xs">Create Task</span>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      {showInput && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-4 rounded">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleInputKeyDown}
-              placeholder="Enter textbook"
-              className="border p-2"
-            />
-          </div>
-        </div>
-      )}
-    </>
-  )
-}
+    <nav className="fixed bottom-4 left-1/2 transform -translate-x-1/2 border border-gray-300 bg-background p-1 rounded shadow">
+      <div className="flex justify-around">
+        {menuItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              cn(
+                "flex flex-col items-center text-xs transition-all",
+                isActive ? "text-accent" : "text-muted-foreground"
+              )
+            }
+          >
+            <item.icon className="h-4 w-4" />
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+      </div>
+    </nav>
+  );
+};

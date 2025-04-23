@@ -8,7 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "install-daisyui": "npm uninstall daisy && npm install daisyui@latest"
   },
   "dependencies": {
     "@capacitor/android": "^7.2.0",
@@ -46,6 +47,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "daisyui": "^4.7.3",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
     "input-otp": "^1.2.4",
@@ -62,6 +64,7 @@
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "ui": "^0.2.4",
     "vaul": "^0.9.3",
     "zod": "^3.23.8"
   },

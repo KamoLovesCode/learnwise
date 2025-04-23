@@ -32,7 +32,278 @@
     animation: logo-spin infinite 20s linear;
   }
 }
+:root {
+  /* Material Dark theme colors */
+  --md-background: #121212;
+  --md-surface: #1e1e1e;
+  --md-surface-variant: #2c2c2c;
+  --md-primary: #bb86fc;
+  --md-primary-variant: #3700b3;
+  --md-secondary: #03dac6;
+  --md-secondary-variant: #018786;
+  --md-error: #cf6679;
+  --md-on-primary: #000000;
+  --md-on-secondary: #000000;
+  --md-on-background: #ffffff;
+  --md-on-surface: #ffffff;
+  --md-on-error: #000000;
+  
+  /* Material elevation overlays - add these to surface to create elevation */
+  --md-elevation-1: rgba(255, 255, 255, 0.05);
+  --md-elevation-2: rgba(255, 255, 255, 0.07);
+  --md-elevation-3: rgba(255, 255, 255, 0.08);
+  --md-elevation-4: rgba(255, 255, 255, 0.09);
+  --md-elevation-6: rgba(255, 255, 255, 0.11);
+  --md-elevation-8: rgba(255, 255, 255, 0.12);
+  --md-elevation-16: rgba(255, 255, 255, 0.14);
+  --md-elevation-24: rgba(255, 255, 255, 0.16);
+  
+  /* Typography */
+  --md-font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, sans-serif;
+}
 
+/* Base Application Styles */
+body {
+  background-color: var(--md-background);
+  color: var(--md-on-background);
+  font-family: var(--md-font-family);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Material surface styles - apply elevation with these classes */
+.md-surface {
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  border-radius: 4px;
+}
+
+.md-surface-1 {
+  background-color: var(--md-surface);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  background-image: linear-gradient(var(--md-elevation-1), var(--md-elevation-1));
+}
+
+.md-surface-2 {
+  background-color: var(--md-surface);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background-image: linear-gradient(var(--md-elevation-2), var(--md-elevation-2));
+}
+
+.md-surface-3 {
+  background-color: var(--md-surface);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  background-image: linear-gradient(var(--md-elevation-3), var(--md-elevation-3));
+}
+
+.md-surface-4 {
+  background-color: var(--md-surface);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  background-image: linear-gradient(var(--md-elevation-4), var(--md-elevation-4));
+}
+
+/* Material buttons */
+.md-btn {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-family: var(--md-font-family);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.md-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  pointer-events: none;
+}
+
+.md-btn:hover::after {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.md-btn:active::after {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.md-btn-primary {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+}
+
+.md-btn-secondary {
+  background-color: var(--md-secondary);
+  color: var(--md-on-secondary);
+}
+
+.md-btn-text {
+  background-color: transparent;
+  color: var(--md-primary);
+}
+
+.md-btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Material cards */
+.md-card {
+  background-color: var(--md-surface);
+  background-image: linear-gradient(var(--md-elevation-1), var(--md-elevation-1));
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.md-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  background-image: linear-gradient(var(--md-elevation-2), var(--md-elevation-2));
+}
+
+.md-card-header {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.md-card-content {
+  padding: 16px;
+}
+
+.md-card-actions {
+  display: flex;
+  padding: 8px;
+  justify-content: flex-end;
+}
+
+/* Material text fields */
+.md-text-field {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.md-text-field input,
+.md-text-field textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: var(--md-surface-variant);
+  color: var(--md-on-surface);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  font-family: var(--md-font-family);
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.md-text-field input:focus,
+.md-text-field textarea:focus {
+  outline: none;
+  border-color: var(--md-primary);
+  box-shadow: 0 0 0 1px var(--md-primary);
+}
+
+.md-text-field label {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  padding: 0 4px;
+  background-color: var(--md-surface);
+  color: var(--md-primary);
+  font-size: 12px;
+}
+
+/* Material navigation */
+.md-bottom-nav {
+  background-color: var(--md-surface);
+  background-image: linear-gradient(var(--md-elevation-8), var(--md-elevation-8));
+  color: var(--md-on-surface);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.md-bottom-nav-item {
+  color: rgba(255, 255, 255, 0.6);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.md-bottom-nav-item.active {
+  color: var(--md-primary);
+}
+
+.md-bottom-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.md-bottom-nav-item.active:hover {
+  background-color: rgba(187, 134, 252, 0.08);
+}
+
+/* Material chips */
+.md-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background-color: var(--md-surface-variant);
+  color: var(--md-on-surface);
+  border-radius: 16px;
+  font-size: 14px;
+  cursor: default;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.md-chip-action {
+  cursor: pointer;
+}
+
+/* Material ripple animation */
+@keyframes ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.md-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: calc(var(--y, 0) * 1px - 50px);
+  left: calc(var(--x, 0) * 1px - 50px);
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+  animation: ripple 0.6s;
+}
 .card {
   padding: 2em;
 }

@@ -1,27 +1,32 @@
 import React from 'react';
-import { Book, Calendar, Clock, PlusCircle, ArrowRight } from 'lucide-react';
-import { Link, useLocation } from "react-router-dom";
+import { Book, Calendar, Clock, ArrowRight } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { BookSearch } from "../components/BookSearch";
+import { BookSearchResult } from "../services/aiBookSearchService";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 const HomePage = () => {
   return (
-    <>
-      <div className="p-6 mb-16">
+    <div>
+      <div className="p-6">
         <h1 className="text-2xl font-bold mb-6">My Learning Dashboard</h1>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <ActionCard 
             title="Library"
             description="Search or add a new textbook to your collection"
             icon={<Book size={24} />}
             actionText="Browse Books"
-            to="/search"
+            to="/library"
           />
-          <ActionCard 
-            title="Create Schedule" 
+          <ActionCard
+            title="Create Schedule"
             description="Generate a study plan for upcoming tests"
-            icon={<Calendar size={24} />}
+            icon={<Calendar size={24}/>}
             actionText="Plan Study"
-            primary
+            primary 
+            to={undefined}
           />
           <ActionCard 
             title="Practice Now" 
@@ -30,7 +35,7 @@ const HomePage = () => {
             actionText="Start Practice"
           />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="col-span-2">
             <div className="bg-white p-4 rounded-lg shadow-sm">
@@ -40,7 +45,7 @@ const HomePage = () => {
                   View All <ArrowRight size={16} className="ml-1" />
                 </button>
               </div>
-              
+
               <div className="space-y-4">
                 <TextbookItem 
                   title="Calculus: Early Transcendentals" 
@@ -60,13 +65,13 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          
+
           <div>
             <div className="bg-white p-4 rounded-lg shadow-sm h-full">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Upcoming Deadlines</h2>
               </div>
-              
+
               <div className="space-y-3">
                 <DeadlineItem 
                   title="Calculus Mid-term"
@@ -88,12 +93,25 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <BottomNav />
-    </>
+    </div>
   );
 };
 
-const ActionCard = ({ title, description, icon, actionText, primary = false, to }) => {
+const ActionCard = ({ 
+  title, 
+  description, 
+  icon, 
+  actionText, 
+  primary = false, 
+  to 
+}: {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  actionText: string;
+  primary?: boolean;
+  to?: string;
+}) => {
   const buttonContent = (
     <span className="flex items-center">
       {actionText} <ArrowRight size={16} className="ml-1" />
@@ -121,7 +139,15 @@ const ActionCard = ({ title, description, icon, actionText, primary = false, to 
   );
 };
 
-const TextbookItem = ({ title, chapters, progress }) => {
+const TextbookItem = ({ 
+  title, 
+  chapters, 
+  progress 
+}: {
+  title: string;
+  chapters: string;
+  progress: number;
+}) => {
   return (
     <div className="flex items-center p-3 border rounded-md">
       <div className="bg-gray-200 h-12 w-12 rounded flex items-center justify-center mr-4">
@@ -144,7 +170,15 @@ const TextbookItem = ({ title, chapters, progress }) => {
   );
 };
 
-const DeadlineItem = ({ title, date, daysLeft }) => {
+const DeadlineItem = ({ 
+  title, 
+  date, 
+  daysLeft 
+}: {
+  title: string;
+  date: string;
+  daysLeft: number;
+}) => {
   return (
     <div className="flex items-center justify-between p-3 border rounded-md">
       <div>
@@ -153,42 +187,6 @@ const DeadlineItem = ({ title, date, daysLeft }) => {
       </div>
       <div className={`text-sm px-2 py-1 rounded ${daysLeft <= 3 ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600'}`}>
         {daysLeft} days left
-      </div>
-    </div>
-  );
-};
-
-const BottomNav = () => {
-  const location = useLocation();
-
-  const isActive = (path) => {
-    return location.pathname === path;
-  };
-
-  return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t">
-      <div className="max-w-lg mx-auto flex justify-around">
-        <Link 
-          to="/library" 
-          className={`flex flex-col items-center p-3 ${isActive('/library') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <Book size={24} />
-          <span className="text-xs mt-1">Library</span>
-        </Link>
-        <Link 
-          to="/schedule" 
-          className={`flex flex-col items-center p-3 ${isActive('/schedule') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <Calendar size={24} />
-          <span className="text-xs mt-1">Schedule</span>
-        </Link>
-        <Link 
-          to="/practice" 
-          className={`flex flex-col items-center p-3 ${isActive('/practice') ? 'text-blue-600' : 'text-gray-600'}`}
-        >
-          <Clock size={24} />
-          <span className="text-xs mt-1">Practice</span>
-        </Link>
       </div>
     </div>
   );
