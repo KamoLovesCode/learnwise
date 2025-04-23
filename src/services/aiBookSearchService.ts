@@ -1,22 +1,7 @@
 // Google Books API integration for book search
-export interface BookSearchResult {
-  id: string;
-  title: string;
-  author: string;
-  description?: string;
-  coverImage?: string;
-  publicationYear?: string;
-  genre?: string;
-  previewLink?: string;
-  tableOfContents?: string[];
-}
 
-export type AIModel = "gemini" | "claude";
 
-export interface SearchOptions {
-  model: AIModel;
-  includeCovers: boolean;
-}
+
 
 // Mock data for demonstration purposes
 const sampleBooks: BookSearchResult[] = [
@@ -76,27 +61,7 @@ const sampleBooks: BookSearchResult[] = [
   }
 ];
 
-// Mock function that simulates searching books with AI
-export const searchBooksWithAI = async (
-  query: string,
-  options: SearchOptions
-): Promise<BookSearchResult[]> => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1500));
-  
-  // Filter books based on query (case insensitive)
-  const lowerQuery = query.toLowerCase();
-  
-  let results = sampleBooks.filter(book => 
-    book.title.toLowerCase().includes(lowerQuery) ||
-    book.author.toLowerCase().includes(lowerQuery) ||
-    book.description?.toLowerCase().includes(lowerQuery) ||
-    book.genre?.toLowerCase().includes(lowerQuery)
-  );
-  
-  // Return results
-  return results;
-};
+// Mock function has been removed to avoid duplicate declaration with the actual implementation below
 export interface BookSearchResult {
   id: string;
   title: string;
@@ -158,56 +123,23 @@ interface GoogleBooksResponse {
   };
 }
 
-// Interface for Google Books API response
-interface GoogleBooksVolume {
-  id: string;
-  volumeInfo: {
-    title: string;
-    subtitle?: string;
-    authors?: string[];
-    publisher?: string;
-    publishedDate?: string;
-    description?: string;
-    pageCount?: number;
-    categories?: string[];
-    imageLinks?: {
-      thumbnail?: string;
-      smallThumbnail?: string;
-      small?: string;
-      medium?: string;
-      large?: string;
-      extraLarge?: string;
-    };
-    previewLink?: string;
-    tableOfContents?: string[] | string;
-  };
-}
-
-interface GoogleBooksResponse {
-  items?: GoogleBooksVolume[];
-  totalItems: number;
-  error?: {
-    message: string;
-  };
-}
-
 /**
  * Search for books using Google Books API
  */
 async function searchGoogleBooks(query: string, maxResults: number = 10): Promise<GoogleBooksVolume[]> {
   console.log(`Searching Google Books for: "${query}"`);
-  
+
   const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=${maxResults}`;
-  
+
   try {
     const response = await fetch(url);
     const data = await response.json() as GoogleBooksResponse;
-    
+
     if (data.error) {
       console.error("Google Books API Error:", data.error.message);
       return [];
     }
-    
+
     return data.items || [];
   } catch (error) {
     console.error("Error searching Google Books:", error);
@@ -278,18 +210,18 @@ function convertGoogleBookToSearchResult(book: GoogleBooksVolume, includeCovers:
  */
 export async function getBookDetails(bookId: string): Promise<BookSearchResult | null> {
   console.log(`Getting details for book ID: ${bookId}`);
-  
+
   const url = `https://www.googleapis.com/books/v1/volumes/${bookId}`;
-  
+
   try {
     const response = await fetch(url);
     const data = await response.json() as GoogleBooksVolume;
-    
+
     if (!data || !data.volumeInfo) {
       console.error("No valid book data returned");
       return null;
     }
-    
+
     return convertGoogleBookToSearchResult(data, true);
   } catch (error) {
     console.error("Error getting book details:", error);
@@ -305,29 +237,29 @@ export const searchBooksWithAI = async (
   options: Partial<SearchOptions> = {}
 ): Promise<BookSearchResult[]> => {
   const searchOptions: SearchOptions = { ...DEFAULT_SEARCH_OPTIONS, ...options };
-  
+
   console.log(`Searching for "${query}" using ${searchOptions.model} model`);
-  
+
   try {
     // Add "textbook" to queries when using textbook-focused model
     let searchQuery = query;
     if (searchOptions.model === 'gemini') {
       searchQuery = `${query} textbook`;
     }
-    
+
     // Use the Google Books API to get actual book results
     const bookResults = await searchGoogleBooks(searchQuery, searchOptions.maxResults || 10);
-    
+
     // Filter and process results based on the selected model
     let processedResults = bookResults;
-    
+
     if (searchOptions.model === 'gemini') {
       // Filter for books more likely to be textbooks or educational
       processedResults = bookResults.filter(book => {
         const categories = book.volumeInfo.categories || [];
         const title = book.volumeInfo.title || "";
         const subtitle = book.volumeInfo.subtitle || "";
-        
+
         // Look for indicators that this is a textbook
         return categories.some(cat => 
             cat.toLowerCase().includes("education") || 
@@ -339,7 +271,7 @@ export const searchBooksWithAI = async (
           title.toLowerCase().includes("principles of") ||
           title.toLowerCase().includes("fundamentals of");
       });
-      
+
       // If no textbooks found, fallback to original results
       if (processedResults.length === 0) {
         processedResults = bookResults;
@@ -356,7 +288,7 @@ export const searchBooksWithAI = async (
         return scoreB - scoreA;
       });
     }
-    
+
     // Convert to our application's BookSearchResult format
     return processedResults.map(book => 
       convertGoogleBookToSearchResult(book, searchOptions.includeCovers)

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { BookSearch } from "../components/BookSearch"
-import { BookSearchResult } from "../services/geminiService"
+import { BookSearchResult } from "../services/aiBookSearchService"
+import { BookOpen } from "lucide-react"
 
 interface Book {
   id: number | string
@@ -30,25 +31,6 @@ export function LibraryPage() {
   const openSearchModal = () => {
     setShowSearchModal(true)
   }
-import React from 'react';
-
-export const LibraryPage: React.FC = () => {
-  return (
-    <div className="container mx-auto p-4">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold text-primary mb-2">My Math Library</h1>
-        <p className="text-lg opacity-75">Your saved textbooks and learning materials</p>
-      </header>
-
-      <div className="alert alert-info">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span>Library feature coming soon! Search for books on the home page and add them to your library.</span>
-      </div>
-    </div>
-  );
-};
   const closeSearchModal = () => {
     setShowSearchModal(false)
   }
@@ -85,7 +67,7 @@ export const LibraryPage: React.FC = () => {
       <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--md-on-background)" }}>
         My Library
       </h1>
-  
+
       {/* Action buttons */}
       <div className="mb-8 flex gap-3 flex-wrap">
         <button
@@ -101,7 +83,7 @@ export const LibraryPage: React.FC = () => {
           Add Book Manually
         </button>
       </div>
-  
+
       {/* Cards for existing books */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
         {books.map((book) => (

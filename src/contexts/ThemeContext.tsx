@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Theme = 'materialLight' | 'light' | 'dark';
+type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  isDark: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -27,7 +28,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const getInitialTheme = (): Theme => {
     const savedTheme = localStorage.getItem('theme') as Theme;
 
-    if (savedTheme && ['materialLight', 'light', 'dark'].includes(savedTheme)) {
+    if (savedTheme && ['light', 'dark'].includes(savedTheme)) {
       return savedTheme;
     }
 
@@ -36,8 +37,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       return 'dark';
     }
 
-    // Default to materialLight if no valid theme is found
-    return 'materialLight';
+    // Default to light if no valid theme is found
+    return 'light';
   };
 
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
@@ -47,25 +48,27 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const html = document.documentElement;
 
     // Remove previous theme classes
-    html.classList.remove('light', 'dark', 'materialLight');
+    html.classList.remove('light', 'dark');
 
     // Add current theme class
     html.classList.add(theme);
 
-    // Set data-theme attribute for DaisyUI
+    // Set data-theme attribute for UI components
     html.setAttribute('data-theme', theme);
 
     // Store theme preference
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Toggle between materialLight and dark themes
+  // Toggle between light and dark themes
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'materialLight' : 'dark');
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  const isDark = theme === 'dark';
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme, isDark }}>
       {children}
     </ThemeContext.Provider>
   );
